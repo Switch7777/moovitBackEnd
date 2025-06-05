@@ -1,5 +1,5 @@
 //importation du module "mongoose"
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 //Schema du model de la Souscollection "Stats" contenus dans la collection "Users"
 const statSchema = mongoose.Schema({
@@ -9,19 +9,17 @@ const statSchema = mongoose.Schema({
   nbEtaps: Number,
   creationDate: Date,
   lastModified: Date,
-})
-
+});
 //Schema du model de la Souscollection "form" contenus dans la collection "Users"
-
 const formSchema = mongoose.Schema({
   reason: String,
   dayTime: String,
-})
-
+});
 //Schema du model de la Collection "Users"
 const userSchema = mongoose.Schema({
   admin: { type: Boolean, default: false },
-  token: { type: String, required: true },
+  provToken: { type: String, required: false },
+  token: { type: String, required: false },
   email: { type: String, required: true },
   password: { type: String, required: true },
   username: String,
@@ -35,7 +33,6 @@ const userSchema = mongoose.Schema({
   },
   city: String,
   notificationActive: Boolean,
-  //photoUrl:{type:String, default:"https://res.cloudinary.com/deuhttaaq/image/upload/f_auto,q_auto/v1748005964/projectFinDeBatch/front/images/default-profile_cltqmm.png"},
   photoUrl: String,
   currentLevelID: Number,
   currentSubLevelID: { type: Number, default: 0 },
@@ -50,8 +47,8 @@ const userSchema = mongoose.Schema({
   },
   height: Number,
   weight: Number,
-})
+});
 
 //exportation du model "User"
-const User = mongoose.model("users", userSchema)
-module.exports = User
+const User = mongoose.model("users", userSchema);
+module.exports = User;
