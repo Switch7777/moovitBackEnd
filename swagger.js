@@ -1,6 +1,6 @@
 // swagger.js
-const swaggerJsdoc = require("swagger-jsdoc")
-const swaggerUi = require("swagger-ui-express")
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const options = {
   definition: {
@@ -11,9 +11,9 @@ const options = {
       description: "Documentation automatique de l’API Mooveit",
     },
   },
-  apis: ["./docs/swagger-docs.yaml"], // On commence en inline, facile à déplacer ensuite !
-}
+  apis: ["./docs/swagger-docs.yaml"],
+};
 
-const swaggerSpec = swaggerJsdoc(options)
+const swaggerSpec = swaggerJsdoc(options);
 
-module.exports = { swaggerUi, swaggerSpec }
+module.exports = { swaggerUi, swaggerSpec };

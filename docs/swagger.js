@@ -11,7 +11,7 @@ const options = {
       description: "Documentation des routes de l'API",
     },
   },
-  apis: ["./routes/**/*.js"], // <<< Vérifie bien ce chemin
+  apis: [path.join(__dirname, "../routes/**/*.js")],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
