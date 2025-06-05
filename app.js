@@ -22,7 +22,7 @@ app.use(logger("dev")); // Active le logger Morgan en mode "dev" pour afficher l
 app.use(express.json()); // Conversion auto des requette en JSON
 app.use(express.urlencoded({ extended: false })); // Conversion des requete en method HTTP
 app.use(cookieParser()); // Active le middleware pour les cookies
-app.use(express.static(path.join(__dirname, "public"))); // pour servir les style de la page public/index.html
+
 app.use("/api/auth/auth", authRouter);
 app.use("/api/dashboard/dashboard", dashboardRouter);
 app.use("/api/services/weather", weatherRouter);
@@ -31,9 +31,7 @@ app.use("/api/services/geoloc", geolocRouter);
 app.use(fileUpload());
 app.use("/api", apiRouter); //   indexRouter est remplacé par apiRouter (voir lg 12)
 // Definition de la page Index
-app.get("/", (req, res) => {
-  res.redirect("/api-docs");
-});
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 module.exports = app;
