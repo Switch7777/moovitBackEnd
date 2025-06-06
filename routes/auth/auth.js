@@ -96,6 +96,16 @@ router.post("/postsignup", (req, res) => {
         res.status(422).json({ result: false, error: "Niveau non trouvé" });
         return;
       }
+      const getPhotoUrl = (gender) => {
+        if (gender === "Masculin")
+          return "https://res.cloudinary.com/deuhttaaq/image/upload/c_thumb,w_250,h_250/v1748005964/projectFinDeBatch/front/images/default-profile-male_cltqmm.png";
+        if (gender === "Féminin")
+          return "https://res.cloudinary.com/deuhttaaq/image/upload/c_thumb,w_250,h_250/v1747993035/projectFinDeBatch/front/images/default-profile-female_kn6nlb.png";
+        if (gender === "Non binaire")
+          return "https://res.cloudinary.com/deuhttaaq/image/upload/c_thumb,w_250,h_250/v1748005964/projectFinDeBatch/front/images/default-profile-male_exgh99.png";
+
+        return "https://res.cloudinary.com/deuhttaaq/image/upload/c_thumb,w_250,h_250/v1748005964/projectFinDeBatch/front/images/default-profile-male_exgh99.png";
+      };
 
       User.updateOne(
         { provToken: req.body.provToken },
@@ -117,6 +127,7 @@ router.post("/postsignup", (req, res) => {
           weight: req.body.weight,
           city: req.body.city.toLowerCase(),
           stats: { nbSessions: 0, totalTime: 0 },
+          photoUrl: getPhotoUrl(req.body.gender),
         }
       ).then((userData) => {
         if (userData.modifiedCount > 0) {
