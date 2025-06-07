@@ -12,6 +12,7 @@ var dashboardRouter = require("./routes/dashboard/dashboard");
 var weatherRouter = require("./routes/services/weather");
 var updateRouter = require("./routes/user/update");
 var geolocRouter = require("./routes/services/geoloc");
+var idphotoRouter = require("./routes/services/cloudinary");
 const fileUpload = require("express-fileupload");
 
 //
@@ -28,6 +29,7 @@ app.use("/api/dashboard/dashboard", dashboardRouter);
 app.use("/api/services/weather", weatherRouter);
 app.use("/api/user/update", updateRouter);
 app.use("/api/services/geoloc", geolocRouter);
+app.use("/api/services/cloudinary", idphotoRouter);
 app.use(fileUpload());
 app.use("/api", apiRouter); //   indexRouter est remplacé par apiRouter (voir lg 12)
 // Definition de la page Index
