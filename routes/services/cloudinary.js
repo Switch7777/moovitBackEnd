@@ -18,6 +18,8 @@ cloudinary.config({
 });
 
 router.post("/idphoto", (req, res) => {
+  console.log("BODY:", req.body);
+  console.log("FILES:", req.files);
   if (!checkBody(req.body, ["token"])) {
     return res.status(400).json({
       result: false,
