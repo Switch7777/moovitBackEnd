@@ -1,13 +1,16 @@
+// 📄 Dépendances & modèles
 var express = require("express");
 var router = express.Router();
-require("../../models/connection"); //import de la connection string
-const User = require("../../models/users"); //import du schema user
-const Activity = require("../../models/activities"); //import du schema activity
-const Medal = require("../../models/medals"); //import du schema activity
-const { checkBody } = require("../../modules/checkBody"); //import de la fonction checkBody qui verifie que tout le champs soit ni null ni une string vide
-const bcrypt = require("bcrypt");
+
+require("../../models/connection"); // Connexion à MongoDB
+const User = require("../../models/users"); // Schéma utilisateur
+const Activity = require("../../models/activities"); // Schéma d’activité (sport, niveaux, sous-niveaux)
+const Medal = require("../../models/medals"); // Schéma des médailles
+const { checkBody } = require("../../modules/checkBody"); // Vérifie les champs requis
+const bcrypt = require("bcrypt"); // Decrypt du passWord
+
 ///////////////////////////////////////////////////////////////////////////////
-//        Update LEVEL a chaque passage de niveau
+// Mise à jour du niveau et du sous-niveau après une session d'activité
 ///////////////////////////////////////////////////////////////////////////////
 router.post("/level", (req, res) => {
   if (!checkBody(req.body, ["token", "sport", "subLevel", "level"])) {
@@ -15,7 +18,7 @@ router.post("/level", (req, res) => {
       result: false,
       error: "Un ou plusieurs champs de saisie sont manquants",
     });
-    return; // FIN DU PROG
+    return;
   }
 
   Activity.findOne({ title: req.body.sport }).then((activityData) => {
@@ -41,10 +44,10 @@ router.post("/level", (req, res) => {
     }
 
     const nbrsublevel = level.subLevels.length;
-
     const currentSubLevel = Number(req.body.subLevel);
     const currentLevel = Number(req.body.level);
 
+    // Calcul du prochain niveau/sous-niveau
     let nextSubLevel;
     let nextLevel;
 
@@ -56,6 +59,7 @@ router.post("/level", (req, res) => {
       nextSubLevel = currentSubLevel + 1;
     }
 
+    // Mise à jour de l'utilisateur avec les nouvelles stats
     User.updateOne(
       { token: req.body.token },
       {
@@ -86,7 +90,7 @@ router.post("/level", (req, res) => {
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-//        Suppresion du compte
+//  Suppression du compte utilisateur
 ///////////////////////////////////////////////////////////////////////////////
 router.delete("/deleteaccount", (req, res) => {
   if (!checkBody(req.body, ["token", "password"])) {
@@ -114,7 +118,7 @@ router.delete("/deleteaccount", (req, res) => {
       return;
     }
 
-    // Suppression de l'utilisateur
+    // Suppression définitive du compte
     User.deleteOne({ token: req.body.token })
       .then(() => {
         res.status(200).json({ result: true, message: "Compte supprimé" });
@@ -128,11 +132,22 @@ router.delete("/deleteaccount", (req, res) => {
   });
 });
 
+///////////////////////////////////////////////////////////////////////////////
+//  Documentation Swagger pour ces endpoints
+///////////////////////////////////////////////////////////////////////////////
+
 /**
  * @swagger
- * /api/user/update/level:
+ * tags:
+ *   name: Update
+ *   description: Mise à jour des utilisateurs (niveau, suppression)
+ */
+
+/**
+ * @swagger
+ * /api/update/level:
  *   post:
- *     summary: Met à jour le niveau/sous-niveau/xp/session d’un utilisateur après une session
+ *     summary: Met à jour le niveau, sous-niveau, XP et temps de jeu d’un utilisateur
  *     tags: [Update]
  *     requestBody:
  *       required: true
@@ -168,64 +183,22 @@ router.delete("/deleteaccount", (req, res) => {
  *               properties:
  *                 result:
  *                   type: boolean
+ *                   example: true
  *                 currentLevelID:
  *                   type: integer
  *                 currentSubLevelID:
  *                   type: integer
  *       400:
- *         description: Erreur de validation ou utilisateur non mis à jour
+ *         description: Données invalides ou utilisateur non modifié
  *       404:
  *         description: Activité, niveau ou sous-niveau introuvable
  */
 
 /**
  * @swagger
- * /api/user/update/idphoto:
- *   post:
- *     summary: Met à jour la photo de profil d’un utilisateur
- *     tags: [Update]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - token
- *               - photoUrl
- *             properties:
- *               token:
- *                 type: string
- *                 example: xBn9TVSFhH_sudEq73B3IR39b_ozIWhA
- *               photoUrl:
- *                 type: string
- *                 format: uri
- *                 example: https://res.cloudinary.com/demo/image/upload/v1717000000/sample.jpg
- *     responses:
- *       200:
- *         description: Photo mise à jour avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 result:
- *                   type: boolean
- *                 message:
- *                   type: string
- *       400:
- *         description: Champs manquants dans la requête
- *       404:
- *         description: Utilisateur introuvable ou aucune modification apportée
- *       500:
- *         description: Erreur serveur lors de la mise à jour
- */
-
-/**
- * @swagger
- * /api/user/update/deleteaccount:
+ * /api/update/deleteaccount:
  *   delete:
- *     summary: Supprime le compte utilisateur
+ *     summary: Supprime définitivement un compte utilisateur
  *     tags: [Update]
  *     requestBody:
  *       required: true
@@ -239,27 +212,16 @@ router.delete("/deleteaccount", (req, res) => {
  *             properties:
  *               token:
  *                 type: string
- *                 description: Token d’authentification de l’utilisateur
+ *                 description: Token d’authentification
  *                 example: xBn9TVSFhH_sudEq73B3IR39b_ozIWhA
  *               password:
  *                 type: string
  *                 format: password
- *                 description: Mot de passe de l’utilisateur
+ *                 description: Mot de passe actuel de l’utilisateur
  *                 example: azerty123
  *     responses:
  *       200:
  *         description: Compte supprimé avec succès
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 result:
- *                   type: boolean
- *                   example: true
- *                 message:
- *                   type: string
- *                   example: Compte supprimé
  *       400:
  *         description: Champs manquants
  *       401:
@@ -267,6 +229,7 @@ router.delete("/deleteaccount", (req, res) => {
  *       404:
  *         description: Utilisateur introuvable
  *       500:
- *         description: Erreur serveur lors de la suppression
+ *         description: Erreur serveur
  */
+
 module.exports = router;

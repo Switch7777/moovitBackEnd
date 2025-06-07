@@ -1,10 +1,9 @@
 var express = require("express");
 var router = express.Router();
-require("../../models/connection"); //import de la connection string
-const User = require("../../models/users"); //import du schema user
-const Activity = require("../../models/activities"); //import du schema activity
-const Medal = require("../../models/medals"); //import du schema activity
-const { checkBody } = require("../../modules/checkBody"); //import de la fonction checkBody qui verifie que tout le champs soit ni null ni une string vide
+require("../../models/connection");
+const User = require("../../models/users");
+const Activity = require("../../models/activities");
+const { checkBody } = require("../../modules/checkBody");
 
 ///////////////////////////////////////////////////////////////////////////////
 //        Initialisation du Dashboard avec info de l'user
@@ -15,7 +14,7 @@ router.post("/initdash", (req, res) => {
       result: false,
       error: "Token absent",
     });
-    return; // FIN DU PROG
+    return;
   }
 
   User.findOne({ token: req.body.token })
@@ -89,6 +88,7 @@ router.post("/initdash", (req, res) => {
         .json({ result: false, error: "Erreur serveur", details: err });
     });
 });
+
 ///////////////////////////////////////////////////////////////////////////////
 //       Initialisation du carrousel
 ///////////////////////////////////////////////////////////////////////////////
@@ -127,53 +127,7 @@ router.post("/initcarroussel", (req, res) => {
 
 /**
  * @swagger
- * /api/dashboard/dashboard/initcarroussel:
- *   post:
- *     summary: Récupère les images et titres des niveaux pour le carrousel
- *     tags: [Dashboard]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - token
- *             properties:
- *               token:
- *                 type: string
- *                 example: xBn9TVSFhH_sudEq73B3IR39b_ozIWhA
- *     responses:
- *       200:
- *         description: Liste des niveaux avec titres et images
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 result:
- *                   type: boolean
- *                   example: true
- *                 carouselData:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       title:
- *                         type: string
- *                         example: Niveau 1
- *                       image:
- *                         type: string
- *                         example: https://res.cloudinary.com/demo/image/upload/niveau1.png
- *       400:
- *         description: Token manquant
- *       500:
- *         description: Erreur serveur
- */
-
-/**
- * @swagger
- * /api/dashboard/dashboard/initdash:
+ * /api/dashboard/initdash:
  *   post:
  *     summary: Initialise les données du tableau de bord utilisateur
  *     tags: [Dashboard]
@@ -258,4 +212,51 @@ router.post("/initcarroussel", (req, res) => {
  *       500:
  *         description: Erreur serveur
  */
+
+/**
+ * @swagger
+ * /api/dashboard/initcarroussel:
+ *   post:
+ *     summary: Récupère les images et titres des niveaux pour le carrousel
+ *     tags: [Dashboard]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 example: xBn9TVSFhH_sudEq73B3IR39b_ozIWhA
+ *     responses:
+ *       200:
+ *         description: Liste des niveaux avec titres et images
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: boolean
+ *                   example: true
+ *                 carouselData:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       title:
+ *                         type: string
+ *                         example: Niveau 1
+ *                       image:
+ *                         type: string
+ *                         example: https://res.cloudinary.com/demo/image/upload/niveau1.png
+ *       400:
+ *         description: Token manquant
+ *       500:
+ *         description: Erreur serveur
+ */
+
 module.exports = router;

@@ -1,19 +1,23 @@
 var express = require("express");
 var router = express.Router();
-require("../../models/connection"); //import de la connection string
-const User = require("../../models/users"); //import du schema user
-const Activity = require("../../models/activities"); //import du schema activity
-const Medal = require("../../models/medals"); //import du schema activity
-const { checkBody } = require("../../modules/checkBody"); //import de la fonction checkBody qui verifie que tout le champs soit ni null ni une string vide
+require("../../models/connection");
+const User = require("../../models/users");
+const Activity = require("../../models/activities");
+const Medal = require("../../models/medals");
+const { checkBody } = require("../../modules/checkBody");
 const bcrypt = require("bcrypt");
 
+/**
+ * Récupère les données du sous-niveau spécifié d'une activité donnée.
+ * Nécessite le token, le sport, le niveau et le sous-niveau.
+ */
 router.post("/getdataact", (req, res) => {
   if (!checkBody(req.body, ["token", "sport", "subLevel", "level"])) {
     res.status(400).json({
       result: false,
       error: "Un ou plusieurs champs de saisie sont manquants",
     });
-    return; // FIN DU PROG
+    return;
   }
 
   Activity.findOne({ title: req.body.sport }).then((activityData) => {
@@ -41,5 +45,72 @@ router.post("/getdataact", (req, res) => {
     }
   });
 });
+
+/**
+ * @swagger
+ * /api/activity/getdataact:
+ *   post:
+ *     summary: Récupère les données d’un sous-niveau d’activité
+ *     tags: [Dashboard]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *               - sport
+ *               - level
+ *               - subLevel
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 example: xBn9TVSFhH_sudEq73B3IR39b_ozIWhA
+ *               sport:
+ *                 type: string
+ *                 example: Padel
+ *               level:
+ *                 type: integer
+ *                 example: 1
+ *               subLevel:
+ *                 type: integer
+ *                 example: 2
+ *     responses:
+ *       200:
+ *         description: Liste des sous-niveaux du niveau demandé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 activity:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       subLevelID:
+ *                         type: integer
+ *                         example: 2
+ *                       title:
+ *                         type: string
+ *                         example: "Sous-niveau 2"
+ *                       description:
+ *                         type: string
+ *                         example: "Travailler les volées"
+ *                       mediaUrl:
+ *                         type: string
+ *                         example: "https://youtube.com/..."
+ *                       xp:
+ *                         type: integer
+ *                         example: 50
+ *                       timing:
+ *                         type: integer
+ *                         example: 180
+ *       400:
+ *         description: Champs de requête manquants
+ *       404:
+ *         description: Activité, niveau ou sous-niveau introuvable
+ */
 
 module.exports = router;

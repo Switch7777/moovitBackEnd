@@ -205,7 +205,7 @@ router.post("/signin", (req, res) => {
 
 /**
  * @swagger
- * /api/auth/auth/signup:
+ * /api/auth/signup:
  *   post:
  *     summary: Inscription d'un nouvel utilisateur
  *     description: Crée un utilisateur avec une adresse email et un mot de passe. Retourne un token provisoire si la création est réussie.
@@ -294,7 +294,7 @@ router.post("/signin", (req, res) => {
 
 /**
  * @swagger
- * /api/auth/auth/postsignup:
+ * /api/auth/postsignup:
  *   post:
  *     summary: Finaliser l'inscription d'un utilisateur
  *     description: Met à jour un utilisateur existant avec un token provisoire, en ajoutant les informations de profil et le sport choisi.
@@ -407,7 +407,7 @@ router.post("/signin", (req, res) => {
 
 /**
  * @swagger
- * /api/auth/auth/signin:
+ * /api/auth/signin:
  *   post:
  *     summary: Connexion d'un utilisateur
  *     description: Authentifie un utilisateur avec son email et son mot de passe. Retourne un token si l'onboarding est complété, ou un provToken sinon.

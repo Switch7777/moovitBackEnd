@@ -1,20 +1,25 @@
+// Importation des modules nécessaires
 const express = require("express");
 const router = express.Router();
 
+// Route POST pour récupérer la ville et le pays depuis des coordonnées GPS
 router.post("/", (req, res) => {
   const { lat, lon } = req.body;
 
+  // Vérifie que les coordonnées sont bien présentes
   if (!lat || !lon) {
     return res
       .status(400)
       .json({ result: false, error: "Coordonnées manquantes" });
   }
 
+  // Construction de l’URL pour l’API Nominatim
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
 
+  // Appel à l'API Nominatim avec en-tête obligatoire
   fetch(url, {
     headers: {
-      "User-Agent": "mooveit-backend", // Obligatoire pour Nominatim
+      "User-Agent": "mooveit-backend",
     },
   })
     .then((response) => response.json())
@@ -23,6 +28,7 @@ router.post("/", (req, res) => {
       const city = address.city || address.town || address.village || null;
       const country = address.country || null;
 
+      // Vérifie que la ville et le pays ont bien été trouvés
       if (!city || !country) {
         return res.status(404).json({
           result: false,
@@ -30,6 +36,7 @@ router.post("/", (req, res) => {
         });
       }
 
+      // Réponse avec les données géographiques
       res.status(200).json({
         result: true,
         city,
@@ -43,9 +50,13 @@ router.post("/", (req, res) => {
     });
 });
 
+///////////////////////////////////////////////////////////////////////////////
+// Swagger Documentation - POST /api/geoloc
+///////////////////////////////////////////////////////////////////////////////
+
 /**
  * @swagger
- * /api/services/geoloc:
+ * /api/geoloc:
  *   post:
  *     summary: Obtenir la ville et le pays à partir de coordonnées GPS
  *     tags: [Services]
@@ -89,4 +100,5 @@ router.post("/", (req, res) => {
  *       500:
  *         description: Erreur interne du serveur
  */
+
 module.exports = router;
