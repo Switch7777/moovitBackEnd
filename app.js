@@ -18,6 +18,7 @@ var weatherRouter = require("./routes/services/weather");
 var updateRouter = require("./routes/user/update");
 var geolocRouter = require("./routes/services/geoloc");
 var idphotoRouter = require("./routes/services/cloudinary");
+var actRouter = require("./routes/activity/activity");
 
 //
 
@@ -34,6 +35,7 @@ app.use("/api/services/weather", weatherRouter);
 app.use("/api/services/cloudinary", idphotoRouter);
 app.use("/api/user/update", updateRouter);
 app.use("/api/services/geoloc", geolocRouter);
+app.use("/api/activity/activity", actRouter);
 
 app.use("/api", apiRouter); //   indexRouter est remplacé par apiRouter (voir lg 12)
 // Definition de la page Index
