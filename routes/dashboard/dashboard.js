@@ -77,6 +77,8 @@ router.post("/initdash", (req, res) => {
             subLevel: userData.currentSubLevelID,
             photoUrl: userData.photoUrl,
             sport: sport,
+            height: userData.height,
+            weight: userData.weight,
           },
         });
       });
@@ -225,6 +227,12 @@ router.post("/initcarroussel", (req, res) => {
  *                     totalGame:
  *                       type: integer
  *                       example: 12
+ * height:
+ *                       type: integer
+ *                       example: 120
+ * weight:
+ *                       type: integer
+ *                       example: 70
  *                     photoUrl:
  *                       type: string
  *                       example: https://res.cloudinary.com/demo/image/upload/v1234567890/photo.png
