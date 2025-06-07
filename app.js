@@ -10,7 +10,7 @@ var logger = require("morgan"); // Middleware pour afficher les LOG HTTP
 var app = express(); // Initialise Express
 
 const fileUpload = require("express-fileupload");
-app.use(fileUpload());
+app.use(fileUpload({ useTempFiles: true }));
 var apiRouter = require("./routes/api"); //Defini le endpoint API pour les routes
 var authRouter = require("./routes/auth/auth"); //Defini le endpoint USERS pour les routes
 var dashboardRouter = require("./routes/dashboard/dashboard");
@@ -31,9 +31,9 @@ app.use(cookieParser()); // Active le middleware pour les cookies
 app.use("/api/auth/auth", authRouter);
 app.use("/api/dashboard/dashboard", dashboardRouter);
 app.use("/api/services/weather", weatherRouter);
+app.use("/api/services/cloudinary", idphotoRouter);
 app.use("/api/user/update", updateRouter);
 app.use("/api/services/geoloc", geolocRouter);
-app.use("/api/services/cloudinary", idphotoRouter);
 
 app.use("/api", apiRouter); //   indexRouter est remplacé par apiRouter (voir lg 12)
 // Definition de la page Index
