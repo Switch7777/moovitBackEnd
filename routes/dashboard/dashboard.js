@@ -76,6 +76,7 @@ router.post("/initdash", (req, res) => {
             totalGame: totalGame,
             subLevel: userData.currentSubLevelID,
             photoUrl: userData.photoUrl,
+            sport: sport,
           },
         });
       });
@@ -165,6 +166,7 @@ router.post("/initcarroussel", (req, res) => {
  *         description: Erreur serveur
  */
 /**
+/**
  * @swagger
  * /api/dashboard/dashboard/initdash:
  *   post:
@@ -192,30 +194,52 @@ router.post("/initcarroussel", (req, res) => {
  *               properties:
  *                 result:
  *                   type: boolean
+ *                   example: true
  *                 user:
  *                   type: object
  *                   properties:
  *                     username:
  *                       type: string
+ *                       example: switch
  *                     name:
  *                       type: string
+ *                       example: Sami
  *                     xp:
  *                       type: integer
+ *                       example: 23
  *                     stats:
  *                       type: object
  *                       properties:
  *                         nbSessions:
  *                           type: integer
+ *                           example: 5
  *                         totalTime:
  *                           type: integer
+ *                           example: 1230
  *                     level:
  *                       type: integer
+ *                       example: 1
  *                     subLevel:
  *                       type: integer
+ *                       example: 5
  *                     totalGame:
  *                       type: integer
+ *                       example: 12
  *                     photoUrl:
  *                       type: string
+ *                       example: https://res.cloudinary.com/demo/image/upload/v1234567890/photo.png
+ *                     sport:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: 6835b97db0e48279faa91460
+ *                         title:
+ *                           type: string
+ *                           example: Padel
+ *                         image:
+ *                           type: string
+ *                           example: https://res.cloudinary.com/demo/image/upload/padel.png
  *       400:
  *         description: Token manquant
  *       404:
