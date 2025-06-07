@@ -153,6 +153,7 @@ router.post("/initcarroussel", (req, res) => {
  *               properties:
  *                 result:
  *                   type: boolean
+ *                   example: true
  *                 carouselData:
  *                   type: array
  *                   items:
@@ -160,14 +161,16 @@ router.post("/initcarroussel", (req, res) => {
  *                     properties:
  *                       title:
  *                         type: string
+ *                         example: Niveau 1
  *                       image:
  *                         type: string
+ *                         example: https://res.cloudinary.com/demo/image/upload/niveau1.png
  *       400:
  *         description: Token manquant
  *       500:
  *         description: Erreur serveur
  */
-/**
+
 /**
  * @swagger
  * /api/dashboard/dashboard/initdash:
@@ -227,15 +230,15 @@ router.post("/initcarroussel", (req, res) => {
  *                     totalGame:
  *                       type: integer
  *                       example: 12
- * height:
+ *                     height:
  *                       type: integer
- *                       example: 120
- * weight:
+ *                       example: 170
+ *                     weight:
  *                       type: integer
  *                       example: 70
  *                     photoUrl:
  *                       type: string
- *                       example: https://res.cloudinary.com/demo/image/upload/v1234567890/photo.png
+ *                       example: https://res.cloudinary.com/demo/image/upload/photo.png
  *                     sport:
  *                       type: object
  *                       properties:
