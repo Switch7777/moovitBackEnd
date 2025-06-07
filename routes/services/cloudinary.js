@@ -18,47 +18,59 @@ cloudinary.config({
 });
 
 router.post("/idphoto", (req, res) => {
+  console.log(">> Requête reçue /idphoto");
   console.log("BODY:", req.body);
   console.log("FILES:", req.files);
+
   if (!checkBody(req.body, ["token"])) {
-    return res.status(400).json({
-      result: false,
-      error: "Token manquant",
-    });
+    console.log("❌ Token manquant");
+    return res.status(400).json({ result: false, error: "Token manquant" });
   }
 
-  const photo = req.files.photoFromFront;
+  const photo = req.files?.photoFromFront;
+
+  if (!photo) {
+    console.log("❌ Aucune photo reçue");
+    return res.status(400).json({ result: false, error: "Aucune photo reçue" });
+  }
+
   const tempPath = `./tmp/${uniqid()}.jpg`;
 
   photo
     .mv(tempPath)
     .then(() => {
+      console.log("✅ Photo enregistrée temporairement");
       return cloudinary.uploader.upload(tempPath, {
         folder: "mooveit/profil",
       });
     })
     .then((uploadResult) => {
+      console.log("✅ Upload Cloudinary OK");
       fs.unlinkSync(tempPath);
 
       return User.updateOne(
         { token: req.body.token },
         { $set: { photoUrl: uploadResult.secure_url } }
-      ).then((updateRes) => {
-        if (updateRes.modifiedCount === 0) {
-          return res.status(404).json({
-            result: false,
-            error: "Utilisateur non trouvé ou non modifié",
-          });
-        }
-
-        res.status(200).json({
-          result: true,
-          message: "Photo mise à jour",
-          url: uploadResult.secure_url,
+      );
+    })
+    .then((updateRes) => {
+      if (updateRes.modifiedCount === 0) {
+        console.log("❌ Utilisateur non modifié");
+        return res.status(404).json({
+          result: false,
+          error: "Utilisateur non trouvé ou non modifié",
         });
+      }
+
+      console.log("✅ Photo mise à jour en BDD");
+      res.status(200).json({
+        result: true,
+        message: "Photo mise à jour",
+        url: uploadResult.secure_url,
       });
     })
     .catch((err) => {
+      console.error("❌ ERREUR :", err);
       if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
       res.status(500).json({
         result: false,
