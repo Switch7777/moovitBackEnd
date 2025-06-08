@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
 });
 /**
  * @swagger
- * /api/ping/wake-up:
+ * /api/start:
  *   get:
  *     summary: Vérifie que le serveur est actif
  *     description: Route de test ou de "réveil" utilisée pour éviter que le serveur ne se mette en veille. Répond avec un message simple.
