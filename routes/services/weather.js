@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
             result: true,
             city: weatherData.name,
             weather: weatherData.weather[0].description,
-            temperature: weatherData.main.temp,
+            temperature: weatherData.main.temp.toFixed(1),
             icon: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`,
           });
         }
