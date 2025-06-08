@@ -33,6 +33,7 @@ const idphotoRouter = require("./routes/services/cloudinary"); // Upload photo d
 const updateRouter = require("./routes/user/update"); // Mise à jour du profil utilisateur ( Level++ ) et Suppresion de compte
 const actRouter = require("./routes/activity/activity"); // Données d’activités (BDD pour la data des activités)
 const trainRouter = require("./routes/activity/train");
+const startRouter = require("./routes/services/start");
 //  Affectation des routes avec leur prefixe
 app.use("/api/auth", authRouter);
 app.use("/api/dashboard", dashboardRouter);
@@ -42,6 +43,7 @@ app.use("/api/cloudinary", idphotoRouter);
 app.use("/api/update", updateRouter);
 app.use("/api/activity", actRouter);
 app.use("/api/train", trainRouter);
+app.use("/api/start", startRouter);
 app.use("/api", apiRouter); // Route de base API (par ex: /api/ping)
 
 //  Fichiers statiques (si tu ajoutes une page publique ou une doc statique)
