@@ -19,30 +19,39 @@ router.post("/getdataact", (req, res) => {
     });
     return;
   }
-
-  Activity.findOne({ title: req.body.sport }).then((activityData) => {
-    if (!activityData) {
-      res.status(404).json({ result: false, error: "Activité introuvable" });
-      return;
+  User.findOne({ token: req.body.token }).then((user) => {
+    if (!user) {
+      return res.status(401).json({
+        result: false,
+        error: "Token invalide ou utilisateur introuvable",
+      });
     }
+    Activity.findOne({ title: req.body.sport }).then((activityData) => {
+      if (!activityData) {
+        res.status(404).json({ result: false, error: "Activité introuvable" });
+        return;
+      }
 
-    const level = activityData.levels.find(
-      (levels) => levels.levelID === Number(req.body.level)
-    );
-    if (!level) {
-      res.status(404).json({ result: false, error: "Niveau introuvable" });
-      return;
-    }
+      const level = activityData.levels.find(
+        (levels) => levels.levelID === Number(req.body.level)
+      );
+      if (!level) {
+        res.status(404).json({ result: false, error: "Niveau introuvable" });
+        return;
+      }
 
-    const subLevel = level.subLevels.find(
-      (sub) => sub.subLevelID === Number(req.body.subLevel)
-    );
-    if (!subLevel) {
-      res.status(404).json({ result: false, error: "Sous-niveau introuvable" });
-      return;
-    } else {
-      res.json({ activity: level.subLevels });
-    }
+      const subLevel = level.subLevels.find(
+        (sub) => sub.subLevelID === Number(req.body.subLevel)
+      );
+      if (!subLevel) {
+        res
+          .status(404)
+          .json({ result: false, error: "Sous-niveau introuvable" });
+        return;
+      } else {
+        res.json({ activity: level.subLevels });
+      }
+    });
   });
 });
 

@@ -53,7 +53,7 @@ router.post("/", (req, res) => {
  * /api/weather:
  *   post:
  *     summary: Récupère la météo actuelle selon la ville enregistrée de l'utilisateur
- *     description: Requiert un token valide d'utilisateur. Utilise la ville enregistrée dans son profil pour interroger l'API OpenWeatherMap.
+ *     description: "Requiert un token valide d'utilisateur. Utilise la ville enregistrée dans son profil pour interroger l'API OpenWeatherMap."
  *     tags: [Services]
  *     requestBody:
  *       required: true
@@ -70,7 +70,7 @@ router.post("/", (req, res) => {
  *                 example: "abc123xyz456"
  *     responses:
  *       200:
- *         description: Données météo récupérées avec succès
+ *         description: "Données météo récupérées avec succès"
  *         content:
  *           application/json:
  *             schema:
@@ -92,7 +92,7 @@ router.post("/", (req, res) => {
  *                   type: string
  *                   example: "https://openweathermap.org/img/wn/01d@2x.png"
  *       400:
- *         description: Requête invalide (ex: token manquant)
+ *         description: "Requête invalide (ex: token manquant)"
  *         content:
  *           application/json:
  *             schema:
@@ -105,7 +105,7 @@ router.post("/", (req, res) => {
  *                   type: string
  *                   example: "Token requis"
  *       404:
- *         description: Ville ou météo introuvable
+ *         description: "Ville ou météo introuvable"
  *         content:
  *           application/json:
  *             schema:
@@ -118,5 +118,4 @@ router.post("/", (req, res) => {
  *                   type: string
  *                   example: "Ville non trouvée"
  */
-
 module.exports = router;

@@ -32,7 +32,7 @@ const geolocRouter = require("./routes/services/geoloc"); // Service de géoloca
 const idphotoRouter = require("./routes/services/cloudinary"); // Upload photo de profil de profil via Cloudinary
 const updateRouter = require("./routes/user/update"); // Mise à jour du profil utilisateur ( Level++ ) et Suppresion de compte
 const actRouter = require("./routes/activity/activity"); // Données d’activités (BDD pour la data des activités)
-
+const trainRouter = require("./routes/activity/train");
 //  Affectation des routes avec leur prefixe
 app.use("/api/auth", authRouter);
 app.use("/api/dashboard", dashboardRouter);
@@ -41,6 +41,7 @@ app.use("/api/geoloc", geolocRouter);
 app.use("/api/cloudinary", idphotoRouter);
 app.use("/api/update", updateRouter);
 app.use("/api/activity", actRouter);
+app.use("/api/train", trainRouter);
 app.use("/api", apiRouter); // Route de base API (par ex: /api/ping)
 
 //  Fichiers statiques (si tu ajoutes une page publique ou une doc statique)
