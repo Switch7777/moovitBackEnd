@@ -36,8 +36,8 @@ router.post("/", (req, res) => {
             result: true,
             city: weatherData.name,
             weather: weatherData.weather[0].description,
-            temperature: weatherData.main.temp.toFixed(1),
-            icon: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`,
+            temperature: weatherData.main.temp.toFixed(1), // 1 chiffre apres la virgule
+            icon: `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`, // Demande a l'api l'icone en haute résolution (2x)
           });
         }
       });

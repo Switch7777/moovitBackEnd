@@ -10,5 +10,5 @@ const trainSchema = mongoose.Schema({
   tipOfThePro: String,
   xp: Number,
 });
-const Train = mongoose.model("trains", trainSchema);
+const Train = mongoose.model("trains", trainSchema); // (Nom de la collection , schema a utiliser)
 module.exports = Train;

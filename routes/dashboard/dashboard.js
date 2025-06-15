@@ -18,7 +18,7 @@ router.post("/initdash", (req, res) => {
   }
 
   User.findOne({ token: req.body.token })
-    .populate("sportPlayed", "title image")
+    .populate("sportPlayed", "title image") // Populate des clé etrangere
     .then((userData) => {
       if (!userData) {
         res
@@ -27,7 +27,7 @@ router.post("/initdash", (req, res) => {
         return;
       }
 
-      const sport = userData.sportPlayed[0];
+      const sport = userData.sportPlayed[0]; // Recuperation de l'index 0 du populate
       if (!sport) {
         res.status(404).json({
           result: false,
@@ -45,7 +45,7 @@ router.post("/initdash", (req, res) => {
         }
 
         const activityLevel = activityData.levels.find(
-          (level) => level.levelID === userData.currentLevelID
+          (level) => level.levelID === userData.currentLevelID // Recuperation de la data de activité en fonction du level de l'user
         );
 
         if (!activityLevel) {
@@ -60,7 +60,7 @@ router.post("/initdash", (req, res) => {
 
         for (let i = 0; i < activityData.levels.length; i++) {
           for (let j = 0; j < activityData.levels[i].subLevels.length; j++) {
-            totalGame++;
+            totalGame++; // Calcul du temps total des activité (dynamique ok )
           }
         }
 

@@ -19,7 +19,7 @@ const levelSchema = mongoose.Schema({
   title: String,
   description: String,
   image: String,
-  subLevels: [subLevelSchema],
+  subLevels: [subLevelSchema], // Sous Collection
 });
 
 //Schema du model de la Collection "Activitys"
@@ -27,9 +27,11 @@ const activitySchema = mongoose.Schema({
   title: String,
   description: String,
   image: String,
-  levels: [levelSchema],
+  levels: [levelSchema], // Sous Collection
 });
 
 //exportation du model "Activity"
 const Activity = mongoose.model("activities", activitySchema);
 module.exports = Activity;
+
+// Un modèle Mongoose, c’est un moule : il permet de définir la forme exacte que doivent avoir les données dans une collection MongoDB, pour pouvoir ensuite les ajouter, récupérer, modifier de manière propre, sécurisée et organisée.

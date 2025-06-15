@@ -1,4 +1,3 @@
-// 📄 Dépendances & modèles
 var express = require("express");
 var router = express.Router();
 
@@ -8,7 +7,7 @@ const Activity = require("../../models/activities"); // Schéma d’activité (s
 const Medal = require("../../models/medals"); // Schéma des médailles
 const { checkBody } = require("../../modules/checkBody"); // Vérifie les champs requis
 const bcrypt = require("bcrypt"); // Decrypt du passWord
-
+// V2 mise en place de l'algo dans le back end
 ///////////////////////////////////////////////////////////////////////////////
 // Mise à jour du niveau et du sous-niveau après une session d'activité
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,7 +46,7 @@ router.post("/level", (req, res) => {
     const currentSubLevel = Number(req.body.subLevel);
     const currentLevel = Number(req.body.level);
 
-    // Calcul du prochain niveau/sous-niveau
+    // Calcul du next niveau/sous-niveau
     let nextSubLevel;
     let nextLevel;
 
@@ -64,13 +63,15 @@ router.post("/level", (req, res) => {
       { token: req.body.token },
       {
         $set: {
+          // Mise en place de $set pour modification d'une donné mongoose
           currentLevelID: nextLevel,
           currentSubLevelID: nextSubLevel,
         },
         $inc: {
-          "stats.nbSessions": 1,
-          "stats.totalTime": subLevel.timing,
-          xp: subLevel.xp,
+          // Operateur mongoose pour incrementer
+          "stats.nbSessions": 1, //+1 pour le nb sessions
+          "stats.totalTime": subLevel.timing, // Incrementation du timing
+          xp: subLevel.xp, // incrementation des xp
         },
       }
     ).then((modifiedUser) => {
@@ -78,7 +79,7 @@ router.post("/level", (req, res) => {
         res.status(200).json({
           result: true,
           currentLevelID: nextLevel,
-          currentSubLevelID: nextSubLevel,
+          currentSubLevelID: nextSubLevel, // Renvoie des nouveau sous niveau
         });
       } else {
         res
@@ -92,6 +93,9 @@ router.post("/level", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////
 //  Suppression du compte utilisateur
 ///////////////////////////////////////////////////////////////////////////////
+
+// NORME RGPD ( Suppresion des toutes information lié a l'user)
+
 router.delete("/deleteaccount", (req, res) => {
   if (!checkBody(req.body, ["token", "password"])) {
     res.status(400).json({

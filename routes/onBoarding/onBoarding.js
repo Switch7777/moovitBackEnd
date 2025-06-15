@@ -4,7 +4,7 @@ require("../../models/connection");
 const OnBoarding = require("../../models/onBoarding");
 
 // Envoie du Onboarding dans le front
-
+// Route actif non utiliser , a mettre en place afin de supprimer toutes data dans la front
 router.get("/", (req, res) => {
   OnBoarding.find()
     .then((questions) => {

@@ -2,12 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
-const uniqid = require("uniqid");
 require("dotenv").config();
-
 const User = require("../../models/users");
-const checkBody = require("../../modules/checkBody");
 
 // Configuration de Cloudinary à partir des variables d'environnement
 cloudinary.config({

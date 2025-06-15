@@ -3,7 +3,7 @@ var router = express.Router();
 require("../../models/connection"); //import de la connection string
 const User = require("../../models/users"); //import du schema user
 const Activity = require("../../models/activities"); //import du schema activity
-const Medal = require("../../models/medals"); //import du schema activity
+
 const { checkBody } = require("../../modules/checkBody"); //import de la fonction checkBody qui verifie que tout le champs soit ni null ni une string vide
 const uid2 = require("uid2"); // module qui permet de genere une num de token
 const bcrypt = require("bcrypt"); //module permet de haché le password
@@ -24,7 +24,7 @@ router.post("/signup", (req, res) => {
   }
   // -2EME CONDITION REGEX EMAIL
   // Regex de check pour le ReqBodyEmail , renvoie un boolean (([\w.-]=raccourci de [a-zA-Z0-9_.-])) @ et 2caractere apres le .
-  const emailRegex = /^[\w.-]+@[\w.-]+\.[a-z]{2,}$/i;
+  const emailRegex = /^[\w.-]+@[\w.-]+\.[a-z]{2,}$/i; // Securité deja presnte dans le front
   if (!emailRegex.test(req.body.email)) {
     res.status(422).json({
       result: false,
@@ -35,6 +35,7 @@ router.post("/signup", (req, res) => {
   // -3EME CONDITION EMAIL DEJA EXISTANT
   User.findOne({ email: req.body.email }).then((data) => {
     if (data === null) {
+      // Si email non toruvé dans la bdd
       // Cryptage du password (hashé 10x)
       const hash = bcrypt.hashSync(req.body.password, 10);
       // Création d'un nouvel utilisateur
@@ -53,7 +54,7 @@ router.post("/signup", (req, res) => {
             .json({ error: "Une erreur est survenue pendant la sauvegarde" });
         })
         .then((newDoc) => {
-          res.status(201).json({ result: true, provToken: newDoc.provToken }); // Utilisateur créé
+          res.status(201).json({ result: true, provToken: newDoc.provToken }); // Utilisateur provisoire créé
         });
     } else {
       // EMAIL DÉJÀ EXISTANT EN BASE
@@ -108,9 +109,9 @@ router.post("/postsignup", (req, res) => {
       };
 
       User.updateOne(
-        { provToken: req.body.provToken },
+        { provToken: req.body.provToken }, // recherche de l'user en fonction du provToken
         {
-          token: req.body.provToken,
+          token: req.body.provToken, // remplcement du provToken en Token
           provToken: "",
           username: req.body.username,
           name: req.body.name,
@@ -121,17 +122,17 @@ router.post("/postsignup", (req, res) => {
             reason: req.body.reason,
             dayTime: req.body.dayTime,
           },
-          sportPlayed: [data._id],
-          currentLevelID: levelID,
+          sportPlayed: [data._id], // Mise en place de la clé en fonction du sport joué
+          currentLevelID: levelID, // Mise en place du levelID retourné par la fonction ci dessus
           height: req.body.height,
           weight: req.body.weight,
           city: req.body.city.toLowerCase(),
           stats: { nbSessions: 0, totalTime: 0 },
-          photoUrl: getPhotoUrl(req.body.gender),
+          photoUrl: getPhotoUrl(req.body.gender), // Mise en place de la photo de profil en fonction du gender
         }
       ).then((userData) => {
         if (userData.modifiedCount > 0) {
-          res.status(200).json({ result: true, token: req.body.provToken });
+          res.status(200).json({ result: true, token: req.body.provToken }); // Reussi envoie du token definitive
         } else {
           res
             .status(400)
@@ -161,7 +162,9 @@ router.post("/signin", (req, res) => {
   User.findOne({ email: req.body.email })
     .then((data) => {
       if (data && bcrypt.compareSync(req.body.password, data.password)) {
+        // Comparaison du mdp envoyé dans le front et du bcrypt comparesync
         if (data.provToken && data.token === "") {
+          // Verification si l'user a fini son onboarding
           return res.status(202).json({
             result: true,
             message: "Connexion ok , Onboarding en attente",
@@ -176,7 +179,7 @@ router.post("/signin", (req, res) => {
         }
       } else if (
         data &&
-        !bcrypt.compareSync(req.body.password, data.password)
+        !bcrypt.compareSync(req.body.password, data.password) // Si le comparesync n'est pas bon
       ) {
         return res.status(401).json({
           result: false,

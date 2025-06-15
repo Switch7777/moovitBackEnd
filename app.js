@@ -35,6 +35,7 @@ const actRouter = require("./routes/activity/activity"); // Données d’activit
 const trainRouter = require("./routes/activity/train");
 const startRouter = require("./routes/services/start");
 const onBoardingRouter = require("./routes/onBoarding/onBoarding");
+
 //  Affectation des routes avec leur prefixe
 app.use("/api/auth", authRouter);
 app.use("/api/dashboard", dashboardRouter);

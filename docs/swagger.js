@@ -12,6 +12,7 @@ const options = {
       description: "Documentation des routes de l'API",
     },
   },
+  // On cherche tout les fichier dans routes
   apis: [path.join(__dirname, "../routes/**/*.js")],
 };
 

@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 
 //Schema du model de la Souscollection "Stats" contenus dans la collection "Users"
 const statSchema = mongoose.Schema({
-  nbSessions: { type: Number, default: 0 },
-  totalTime: { type: Number, default: 0 },
+  nbSessions: { type: Number, default: 0 }, // a defaut "o"
+  totalTime: { type: Number, default: 0 }, // a default "0"
   lastConnection: Date,
   nbEtaps: Number,
   creationDate: Date,
@@ -20,13 +20,13 @@ const userSchema = mongoose.Schema({
   admin: { type: Boolean, default: false },
   provToken: { type: String, required: false },
   token: { type: String, required: false },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
+  email: { type: String, required: true }, // requierr
+  password: { type: String, required: true }, // requiert
   username: String,
   name: String,
   gender: String,
   age: Number,
-  //déclaration du type geojson point
+  //déclaration du type geojson point ( Non utilisé - A mettre en place des qu'on questionne l'api )
   coordinate: {
     name: String,
     location: { type: { type: String }, coordinates: { type: [Number] } },
@@ -35,14 +35,14 @@ const userSchema = mongoose.Schema({
   notificationActive: Boolean,
   photoUrl: String,
   currentLevelID: Number,
-  currentSubLevelID: { type: Number, default: 1 },
+  currentSubLevelID: { type: Number, default: 1 }, // tout commencement d'une activité commence par le sublevle 1
   xp: { type: Number, default: 0 },
   isSocialConnected: Boolean,
-  sportPlayed: [{ type: mongoose.Schema.Types.ObjectId, ref: "activities" }],
-  form: formSchema,
-  stats: statSchema,
+  sportPlayed: [{ type: mongoose.Schema.Types.ObjectId, ref: "activities" }], // Clé etrangere
+  form: formSchema, // Sous collection
+  stats: statSchema, // Sous collection
   medals: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "medals" }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "medals" }], // Clé etrangere
     default: [],
   },
   height: Number,

@@ -5,7 +5,7 @@ const User = require("../../models/users");
 const Train = require("../../models/train");
 const { checkBody } = require("../../modules/checkBody");
 
-// Route POST /getdataact - Retourne une activité d'échauffement aléatoire
+// Route POST /getdataact - envoie une activité d'échauffement aléatoire
 router.post("/getdataact", (req, res) => {
   if (!checkBody(req.body, ["token"])) {
     res.status(400).json({
@@ -29,7 +29,7 @@ router.post("/getdataact", (req, res) => {
         return;
       }
 
-      const randomIndex = Math.floor(Math.random() * activityData.length);
+      const randomIndex = Math.floor(Math.random() * activityData.length); // genaration d'un random number entre la lenght et 0
       res.json({ result: true, activity: activityData[randomIndex] });
     });
   });

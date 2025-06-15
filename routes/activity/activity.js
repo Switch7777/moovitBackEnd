@@ -3,9 +3,8 @@ var router = express.Router();
 require("../../models/connection");
 const User = require("../../models/users");
 const Activity = require("../../models/activities");
-const Medal = require("../../models/medals");
+
 const { checkBody } = require("../../modules/checkBody");
-const bcrypt = require("bcrypt");
 
 /**
  * Récupère les données du sous-niveau spécifié d'une activité donnée.
@@ -33,7 +32,7 @@ router.post("/getdataact", (req, res) => {
       }
 
       const level = activityData.levels.find(
-        (levels) => levels.levelID === Number(req.body.level)
+        (levels) => levels.levelID === Number(req.body.level) // recuperation du level avec le level envoyé par le front , formatage de level en number pour eviter les erreurs
       );
       if (!level) {
         res.status(404).json({ result: false, error: "Niveau introuvable" });
@@ -41,7 +40,7 @@ router.post("/getdataact", (req, res) => {
       }
 
       const subLevel = level.subLevels.find(
-        (sub) => sub.subLevelID === Number(req.body.subLevel)
+        (sub) => sub.subLevelID === Number(req.body.subLevel) // recuperation du level avec le level envoyé par le front , formatage de level en number pour eviter les erreurs
       );
       if (!subLevel) {
         res

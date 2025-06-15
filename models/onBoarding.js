@@ -20,10 +20,10 @@ const onBoardingSchema = mongoose.Schema({
   mainQuestion: String,
   secondaryQuestion: String,
   tertiary: String,
-  data: [dataItemSchema],
+  data: [dataItemSchema], // Sous collection
 });
 
 // Création du modèle
-const OnBoarding = mongoose.model("onBoardingQuestion", onBoardingSchema);
+const OnBoarding = mongoose.model("onBoardingQuestion", onBoardingSchema); // (Nom de la collection , schema a utiliser)
 
 module.exports = OnBoarding;

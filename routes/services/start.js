@@ -25,6 +25,6 @@ router.get("/", (req, res) => {
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: Serveur actif 🚀
+ *                   example: Backend actif
  */
 module.exports = router;
